@@ -17,7 +17,7 @@ Ensure you have Python 3.x installed along with the necessary dependencies liste
 
 1. Clone the repository or download the script.
 2. Install dependencies using `pip install -r requirements.txt`.
-3. Run the script by executing `python laravlog.py`.
+3. Run the script by executing `python3 laravlog.py`.
 4. Follow the prompts to provide the list of URLs for scanning and thread count for multiprocessing.
 
 ## How it Works
