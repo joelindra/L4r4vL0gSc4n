@@ -1,4 +1,6 @@
 
+![image](https://github.com/user-attachments/assets/2066e139-8f45-4f23-b1d8-5ba07e07be4e)
+
 # Laravel Debug Mode Scanner
 
 A simple Python-based scanner to check for the existence of Laravel Debug Mode vulnerabilities in web applications. The tool checks if a Laravel application exposes sensitive debugging information through the `_ignition/health-check` endpoint, which could indicate the application is in debug mode and vulnerable to exploits.
