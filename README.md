@@ -1,29 +1,86 @@
-# Laravel Debug Scanner
 
-This Python script is a tool designed for scanning Laravel applications for potential debug mode exposure. It utilizes multiprocessing to concurrently check multiple URLs for the presence of Laravel debug mode vulnerability.
+# Laravel Debug Mode Scanner
+
+A simple Python-based scanner to check for the existence of Laravel Debug Mode vulnerabilities in web applications. The tool checks if a Laravel application exposes sensitive debugging information through the `_ignition/health-check` endpoint, which could indicate the application is in debug mode and vulnerable to exploits.
 
 ## Features
+- Checks if the `/ _ignition/health-check` endpoint is exposed by Laravel applications.
+- Detects if the response includes the string `{"can_execute_commands":true}`, indicating the presence of Laravel Debug Mode.
+- Logs the result in either `txt` or `json` format.
+- Supports scanning multiple targets concurrently with configurable thread count.
 
-- **Multiprocessing:** Uses Python's `multiprocessing` for concurrent scanning of multiple URLs.
-- **Error Handling:** Comprehensive error handling to manage various exceptions during the scanning process.
-- **Keyboard Interrupt Handling:** Gracefully stops the scanning process on keyboard interrupt (Ctrl+C).
-- **Result Logging:** Logs potentially vulnerable URLs to a `vuln.txt` file in a `results` folder.
+## Prerequisites
 
-## Requirements
+- Python 3.x
+- `requests` and `colorama` libraries
 
-Ensure you have Python 3.x installed along with the necessary dependencies listed in `requirements.txt`.
+You can install the required libraries using the following:
+
+```bash
+pip install requests colorama
+```
 
 ## Usage
 
-1. Clone the repository or download the script.
-2. Install dependencies using `pip install -r requirements.txt`.
-3. Run the script by executing `python3 laravlog.py`.
-4. Follow the prompts to provide the list of URLs for scanning and thread count for multiprocessing.
+### Single Target Scan
 
-## How it Works
+To scan a single target, run:
 
-The script sends a request to each URL appended with `/_ignition/health-check` to detect if Laravel's debug mode is exposed. If found, the script logs the vulnerable URLs in the `vuln.txt` file within a `results` directory.
+```bash
+python3 laravlog.py -t https://example.com
+```
 
-Feel free to contribute, report issues, or suggest improvements!
+### Multiple Target Scan
 
-**Note:** Use responsibly and only on URLs that you have permission to test.
+To scan a list of targets from a file, create a text file with each target on a new line and use the `-l` option:
+
+```bash
+python3 laravlog.py -l targets.txt
+```
+
+### Log Format
+
+You can choose between two log formats: `txt` or `json`. The default is `txt`. You can specify the format using the `-f` option:
+
+```bash
+python3 laravlog.py -t https://example.com -f json
+```
+
+### Thread Count
+
+You can also configure the number of threads for concurrent scanning using the `-th` option:
+
+```bash
+python3 laravlog.py -t https://example.com -th 20
+```
+
+### Example of Combined Usage
+
+```bash
+python3 laravlog.py -l targets.txt -th 20 -f json
+```
+
+## Logging Results
+
+The scanner will log the results to a file located in the `results` folder:
+
+- `log.txt` or `log.json` based on the chosen format.
+
+Each log entry will indicate whether the site is "VULNERABLE" or "NOT VULNERABLE."
+
+## Output
+
+- If the target is vulnerable, it will be logged with the status `VULNERABLE`.
+- If the target is not vulnerable, it will be logged with the status `NOT VULNERABLE`.
+- In case of errors or timeouts, they will also be displayed in the terminal.
+
+## Example Output
+
+```
+[!] https://example.com/_ignition/health-check => FOUND PATH
+[=] https://anotherexample.com => FVCK OFF
+```
+
+## License
+
+This tool is released under the MIT License. Feel free to modify, distribute, or use it for your own purposes.
